@@ -3471,8 +3471,8 @@ function downloadCalendar() {
 //  AUTH SYSTEM
 // ══════════════════════════════════════════════════════
 
-const ADMIN_EMAIL    = 'skycopatc@yahoo.com';
-const ADMIN_PW_HASH  = btoa('change-me-in-settings');
+// Admin status is assigned to the first user who registers in this browser.
+// No personal email is hardcoded in the source.
 const AUTH_USERS_KEY   = 'nc501_users';
 const AUTH_SESSION_KEY = 'nc501_session';
 
@@ -3488,7 +3488,6 @@ function authClearSession(){ localStorage.removeItem(AUTH_SESSION_KEY); }
 function authCurrentUser() {
   const email = authGetSession();
   if (!email) return null;
-  if (email === ADMIN_EMAIL) return { name: 'Admin', email: ADMIN_EMAIL, isAdmin: true };
   const users = authGetUsers();
   return users[email] || null;
 }
@@ -3530,11 +3529,6 @@ function doLogin() {
   const email = (document.getElementById('auth-email').value || '').trim().toLowerCase();
   const pw    = (document.getElementById('auth-pw').value    || '').trim();
   if (!email || !pw) { showAuthError('Please enter your email and password.'); return; }
-  if (email === ADMIN_EMAIL && btoa(pw) === ADMIN_PW_HASH) {
-    authSetSession(ADMIN_EMAIL);
-    showApp({ name: 'Admin', email: ADMIN_EMAIL, isAdmin: true });
-    return;
-  }
   const users = authGetUsers();
   const user  = users[email];
   if (!user)                 { showAuthError('No account found with that email address.'); return; }
@@ -3554,10 +3548,11 @@ function doRegister() {
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showAuthError('Please enter a valid email address.'); return; }
   if (!pw || pw.length < 6) { showAuthError('Password must be at least 6 characters.'); return; }
   if (!consent) { showAuthError('Please check the consent box to create your account.'); return; }
-  if (email === ADMIN_EMAIL) { showAuthError('That email address is not available.'); return; }
   const users = authGetUsers();
   if (users[email]) { showAuthError('An account with that email already exists. Please sign in.'); return; }
-  const newUser = { name, email, password: btoa(pw), org, phone, marketingConsent: true, registeredAt: new Date().toISOString() };
+  // First registered user in this browser becomes admin
+  const isFirstUser = Object.keys(users).length === 0;
+  const newUser = { name, email, password: btoa(pw), org, phone, marketingConsent: true, registeredAt: new Date().toISOString(), isAdmin: isFirstUser };
   users[email] = newUser;
   authSaveUsers(users);
   authSetSession(email);
