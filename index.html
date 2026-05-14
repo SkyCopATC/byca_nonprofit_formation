@@ -119,10 +119,17 @@ select option{font-size:.88rem}
 /* ── Auth System ── */
 #auth-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(15,23,42,.88);z-index:9999;display:flex;align-items:center;justify-content:center;padding:1rem;box-sizing:border-box}
 .auth-card{background:#fff;border-radius:16px;padding:2rem 2.25rem;max-width:440px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.35)}
-.auth-logo{text-align:center;margin-bottom:1.5rem}
-.auth-logo-icon{font-size:2.5rem;display:block;margin-bottom:.5rem}
-.auth-logo-title{font-size:1.1rem;font-weight:800;color:#1B3A6B}
-.auth-logo-sub{font-size:.78rem;color:#6b7280;margin-top:.2rem}
+.auth-logo{text-align:center;margin-bottom:.85rem}
+.auth-logo-icon{width:62px;height:62px;background:linear-gradient(135deg,#1e3a8a,#2563EB);border-radius:16px;display:inline-flex;align-items:center;justify-content:center;color:#fff;margin:0 auto .85rem;box-shadow:0 4px 14px rgba(37,99,235,.35);font-size:0}
+.auth-logo-title{font-size:1.2rem;font-weight:800;color:#1B3A6B}
+.auth-logo-sub{font-size:.78rem;color:#6b7280;margin-top:.2rem;margin-bottom:.85rem}
+.auth-free-note{display:flex;align-items:flex-start;gap:.45rem;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:8px;padding:.55rem .8rem;margin-bottom:.95rem;font-size:.78rem;color:#1e40af;line-height:1.45;text-align:left}
+.auth-side-links{text-align:center;margin-top:1rem;display:flex;justify-content:center;gap:1.25rem;flex-wrap:wrap}
+.auth-side-links a{font-size:.78rem;color:#9ca3af;text-decoration:none;cursor:pointer}
+.auth-side-links a:hover{color:#2563EB}
+.auth-guide-link{text-align:center;margin-top:1rem;padding-top:.95rem;border-top:1px solid #e2e8f0}
+.auth-guide-link a{font-size:.82rem;color:#2563EB;text-decoration:none;font-weight:500;display:inline-flex;align-items:center;gap:.35rem;cursor:pointer}
+.auth-guide-link a:hover{text-decoration:underline}
 .auth-tabs{display:flex;gap:0;margin-bottom:1.25rem;border-bottom:2px solid #e5e7eb}
 .auth-tab{flex:1;text-align:center;padding:.55rem;font-size:.85rem;font-weight:700;color:#9ca3af;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:.15s}
 .auth-tab.active{color:#1B3A6B;border-bottom-color:#1B3A6B}
@@ -179,9 +186,22 @@ select option{font-size:.88rem}
 <div id="auth-overlay">
   <div class="auth-card">
     <div class="auth-logo">
-      <span class="auth-logo-icon">🏛️</span>
-      <div class="auth-logo-title">501(c) Formation Assistant</div>
-      <div class="auth-logo-sub">by Build Your Club — Free account required</div>
+      <span class="auth-logo-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="9" width="18" height="12" rx="1"/>
+          <path d="M3 9l9-6 9 6"/>
+          <rect x="9" y="13" width="2.5" height="4" rx=".4"/>
+          <rect x="12.5" y="13" width="2.5" height="4" rx=".4"/>
+          <line x1="3" y1="21" x2="21" y2="21"/>
+          <line x1="12" y1="3" x2="12" y2="6"/>
+        </svg>
+      </span>
+      <div class="auth-logo-title">501(c)(3) Formation Assistant</div>
+      <div class="auth-logo-sub">Build Your Club, LLC &nbsp;|&nbsp; buildyourclubacademy.org</div>
+    </div>
+    <div class="auth-free-note">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span>Access to this course requires a <strong>free account</strong>. Use the <em>Create Account</em> tab to register — it only takes a minute.</span>
     </div>
     <div class="auth-tabs">
       <div class="auth-tab active" id="tab-login" onclick="showAuthTab('login')">Sign In</div>
@@ -229,6 +249,24 @@ select option{font-size:.88rem}
       </div>
       <button class="auth-btn" onclick="doRegister()">Create Free Account →</button>
       <div class="auth-link">Already have an account? <a onclick="showAuthTab('login')">Sign in</a></div>
+    </div>
+    <div class="auth-side-links">
+      <a onclick="showAdminLogin()">Administrator Access</a>
+      <a onclick="showAuthTab('register')">Join a Team</a>
+    </div>
+    <div id="admin-login-panel" class="hidden" style="margin-top:1rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:1rem">
+      <div style="font-size:.85rem;font-weight:800;color:#1B3A6B;margin-bottom:.5rem">🔐 Administrator Access</div>
+      <div id="admin-setup-msg" class="hidden" style="font-size:.72rem;color:#1e40af;background:#EFF6FF;border:1px solid #BFDBFE;padding:.45rem .65rem;border-radius:6px;margin-bottom:.65rem">⚠️ First-time setup: create your admin password below.</div>
+      <div class="auth-fg"><label id="admin-pw-label">Admin Password</label><input type="password" id="admin-pw" placeholder="••••••••" onkeydown="if(event.key==='Enter')doAdminLogin()"></div>
+      <div id="admin-pw2-wrap" class="hidden"><div class="auth-fg"><label>Confirm Password</label><input type="password" id="admin-pw2" placeholder="••••••••" onkeydown="if(event.key==='Enter')doAdminLogin()"></div></div>
+      <button class="auth-btn" id="admin-btn" onclick="doAdminLogin()">Enter Admin Panel</button>
+      <a onclick="hideAdminLogin()" style="display:block;text-align:center;margin-top:.6rem;font-size:.75rem;color:#9ca3af;cursor:pointer">← Back to regular sign-in</a>
+    </div>
+    <div class="auth-guide-link">
+      <a href="501c3-Formation-Guide.html" target="_blank">
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        View User Guide
+      </a>
     </div>
   </div>
 </div>
@@ -3525,6 +3563,41 @@ function showAuthError(msg) {
   el.textContent = msg; el.style.display = 'block';
 }
 
+function getAdminHash(){ return localStorage.getItem('byc_formation_admin_hash') || ''; }
+function setAdminHash(h){ localStorage.setItem('byc_formation_admin_hash', h); }
+function showAdminLogin(){
+  document.getElementById('admin-login-panel').classList.remove('hidden');
+  const isSetup = !getAdminHash();
+  document.getElementById('admin-setup-msg').classList.toggle('hidden', !isSetup);
+  document.getElementById('admin-pw2-wrap').classList.toggle('hidden', !isSetup);
+  document.getElementById('admin-pw-label').textContent = isSetup ? 'Create Admin Password' : 'Admin Password';
+  document.getElementById('admin-btn').textContent = isSetup ? 'Create Admin Password' : 'Enter Admin Panel';
+  document.getElementById('admin-pw').value = '';
+  if (document.getElementById('admin-pw2')) document.getElementById('admin-pw2').value = '';
+  document.getElementById('admin-pw').focus();
+}
+function hideAdminLogin(){ document.getElementById('admin-login-panel').classList.add('hidden'); }
+function doAdminLogin(){
+  const pw = document.getElementById('admin-pw').value;
+  if (!pw || pw.length < 6) { alert('Admin password must be at least 6 characters.'); return; }
+  const stored = getAdminHash();
+  if (!stored){
+    const pw2 = document.getElementById('admin-pw2').value;
+    if (pw !== pw2) { alert('Passwords do not match. Try again.'); return; }
+    setAdminHash(btoa(pw));
+    alert('Admin password created. You are now signed in as Administrator.');
+  } else {
+    if (btoa(pw) !== stored) { alert('Incorrect admin password.'); return; }
+  }
+  const adminEmail = 'admin@local';
+  const users = authGetUsers();
+  if (!users[adminEmail]) users[adminEmail] = { name:'Administrator', email:adminEmail, password:'', org:'Build Your Club', phone:'', marketingConsent:false, registeredAt:new Date().toISOString(), isAdmin:true };
+  users[adminEmail].isAdmin = true;
+  authSaveUsers(users);
+  authSetSession(adminEmail);
+  showApp(users[adminEmail]);
+}
+
 function doLogin() {
   const email = (document.getElementById('auth-email').value || '').trim().toLowerCase();
   const pw    = (document.getElementById('auth-pw').value    || '').trim();
@@ -3550,7 +3623,6 @@ function doRegister() {
   if (!consent) { showAuthError('Please check the consent box to create your account.'); return; }
   const users = authGetUsers();
   if (users[email]) { showAuthError('An account with that email already exists. Please sign in.'); return; }
-  // First registered user in this browser becomes admin
   const isFirstUser = Object.keys(users).length === 0;
   const newUser = { name, email, password: btoa(pw), org, phone, marketingConsent: true, registeredAt: new Date().toISOString(), isAdmin: isFirstUser };
   users[email] = newUser;
@@ -3564,89 +3636,13 @@ function doLogout() {
   location.reload();
 }
 
-// ── Migration ────────────────────────────────────────
 function checkMigration() {
   if (!localStorage.getItem('nc501_form_v2')) return;
   if (sessionStorage.getItem('nc501_migrate_shown')) return;
   sessionStorage.setItem('nc501_migrate_shown', '1');
-  document.getElementById('migrate-overlay').style.display = 'flex';
 }
 
-function acceptMigration() {
-  document.getElementById('migrate-overlay').style.display = 'none';
-  // nc501_form_v2 already in localStorage — loadForm() picked it up at startup
-}
-
-function declineMigration() {
-  localStorage.removeItem('nc501_form_v2');
-  document.getElementById('migrate-overlay').style.display = 'none';
-  location.reload();
-}
-
-// ── Admin Panel ──────────────────────────────────────
-function showAdminPanel() {
-  const users = authGetUsers();
-  const list  = Object.values(users);
-  document.getElementById('admin-count').textContent =
-    list.length + ' registered user' + (list.length !== 1 ? 's' : '');
-  const tbody = document.getElementById('admin-tbody');
-  if (list.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#9ca3af;padding:1.5rem">No registered users yet.</td></tr>';
-  } else {
-    tbody.innerHTML = list
-      .sort((a,b) => (a.registeredAt||'').localeCompare(b.registeredAt||''))
-      .map(u =>
-        '<tr>' +
-        '<td>' + u.name + '</td>' +
-        '<td>' + u.email + '</td>' +
-        '<td>' + (u.org||'—') + '</td>' +
-        '<td>' + (u.phone||'—') + '</td>' +
-        '<td>' + (u.registeredAt ? new Date(u.registeredAt).toLocaleDateString() : '—') + '</td>' +
-        '<td style="text-align:center">' + (u.marketingConsent ? '✅' : '—') + '</td>' +
-        '<td><button class="admin-del-btn" onclick="adminDeleteUser(\'' + u.email.replace(/'/g,"\\'") + '\')" title="Delete user">🗑</button></td>' +
-        '</tr>'
-      ).join('');
-  }
-  document.getElementById('admin-overlay').style.display = 'flex';
-}
-
-function closeAdmin() {
-  document.getElementById('admin-overlay').style.display = 'none';
-}
-
-function adminDeleteUser(email) {
-  if (!confirm('Delete account for ' + email + '?\nThis cannot be undone.')) return;
-  const users = authGetUsers();
-  delete users[email];
-  authSaveUsers(users);
-  showAdminPanel();
-}
-
-function exportUsersCSV() {
-  const users = authGetUsers();
-  const list  = Object.values(users);
-  const header = ['Name','Email','Organization','Phone','Registered','Marketing Consent'];
-  const rows   = list.map(u => [
-    u.name, u.email, u.org||'', u.phone||'',
-    u.registeredAt ? new Date(u.registeredAt).toLocaleDateString() : '',
-    u.marketingConsent ? 'Yes' : 'No'
-  ]);
-  const csv = [header, ...rows]
-    .map(r => r.map(v => '"' + String(v).replace(/"/g,'""') + '"').join(','))
-    .join('\n');
-  const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
-  const url  = URL.createObjectURL(blob);
-  const a    = document.createElement('a');
-  a.href = url;
-  a.download = 'BYC-Formation-Users-' + new Date().toISOString().slice(0,10) + '.csv';
-  document.body.appendChild(a); a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-}
-
-// ── Start app ────────────────────────────────────────
-authInit();
-
+document.addEventListener('DOMContentLoaded', authInit);
 </script>
 </body>
 </html>
